@@ -1,0 +1,64 @@
+iris csv 
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix,accuracy_score,precision_score,recall_score,f1_score
+import seaborn as sns
+
+df=pd.read_csv("/content/Iris (1).csv")
+df
+
+df.head()
+
+df.dtypes
+
+df["Species"].value_counts()
+
+df["Species"].replace({"Iris-setosa":0,"Iris-versicolor":1,"Iris-virginica":2},inplace=True)
+df
+
+
+df.dtypes
+
+
+x=df.iloc[:,1:5]
+y=df.iloc[:,5:]
+print(x)
+print(y)
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=42)
+
+
+
+model=GaussianNB()
+model.fit(x_train,y_train)
+
+
+y_pred=model.predict(x_test)
+y_pred
+
+
+cm=confusion_matrix(y_test,y_pred)
+cm
+
+
+a=accuracy_score(y_test,y_pred)
+a
+
+e=1-a
+
+precision_score(y_test,y_pred,average='micro')
+
+recall_score(y_test,y_pred,average='micro')
+
+f1_score(y_test,y_pred,average='micro')
+
+
+pip install mlxtend
+
+from mlxtend.plotting import plot_confusion_matrix
+plot_confusion_matrix(conf_mat=cm,figsize=(5,5),show_normed=True)
+plt.show()
